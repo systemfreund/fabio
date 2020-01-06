@@ -266,18 +266,18 @@ func (p *grpcConnectionPool) Set(target *route.Target, conn *grpc.ClientConn) {
 func (p *grpcConnectionPool) cleanup() {
 	for {
 		p.lock.Lock()
-		table := route.GetTable()
+		// table := route.GetTable()
 		for target, cs := range p.connections {
 			if cs.GetState() == connectivity.Shutdown {
 				delete(p.connections, target)
 				continue
 			}
 
-			if !hasTarget(target, table) {
-				log.Println("[DEBUG] grpc: cleaning up connection to", target.URL.Host)
-				cs.Close()
-				delete(p.connections, target)
-			}
+			// if !hasTarget(target, table) {
+				// log.Println("[DEBUG] grpc: cleaning up connection to", target.URL.Host)
+				// cs.Close()
+				// delete(p.connections, target)
+			// }
 		}
 		p.lock.Unlock()
 		time.Sleep(p.cleanupInterval)
